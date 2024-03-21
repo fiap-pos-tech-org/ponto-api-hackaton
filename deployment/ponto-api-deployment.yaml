@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ponto-api
+  labels:
+    app: ponto-api
+spec:
+  template:
+    metadata:
+      name: ponto-api
+      labels:
+        app: ponto-api
+    spec:
+      containers:
+        - name: ponto-api
+          image: geter/ponto-api-techchallenge38:latest
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_HOST
+              value: ${DB_HOST}
+            - name: DB_USER
+              value: ${DB_USER}
+            - name: DB_PASS
+              value: ${DB_PASS}
+            - name: TOPICO_PAGAMENTO_RETORNO_ARN
+              value: ${TOPICO_PAGAMENTO_RETORNO_ARN}
+            - name: FILA_PAGAMENTO_PENDENTE
+              value: ${FILA_PAGAMENTO_PENDENTE}
+            - name: ENV
+              value: ${ENV}
+          volumeMounts:
+            - mountPath: /ponto-api-volume
+              name: ponto-api-volume
+      volumes:
+        - name: ponto-api-volume
+          hostPath:
+            path: /home/ponto-api-volume
+            type: DirectoryOrCreate
+      serviceAccountName: ponto-api-serviceaccount
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ponto-api
