@@ -32,22 +32,21 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t geter/cobranca-techchallenge38:latest .
-          docker push geter/cobranca-techchallenge38
+          docker build -t geter/ponto-api-techchallenge38:latest .
+          docker push geter/ponto-api-techchallenge38
 
       - name: Deploy EKS
         uses: swdotcom/update-and-apply-kubernetes-configs@v1.3
         with:
           k8-config-file-paths: |
             deployment/alb-ingress.yaml
-            deployment/cobranca-deployment.yaml
-            deployment/cobranca-service.yaml
-            deployment/cobranca-serviceaccount.yaml
+            deployment/ponto-api-deployment.yaml
+            deployment/ponto-api-service.yaml
+            deployment/ponto-api-serviceaccount.yaml
           replacement-method: defined
         env:
           DB_HOST: ${{ secrets.DB_HOST }}
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASS: ${{ secrets.DB_PASS }}
-          TOPICO_PAGAMENTO_RETORNO_ARN: ${{ vars.TOPICO_PAGAMENTO_RETORNO_ARN }}
-          FILA_PAGAMENTO_PENDENTE: ${{vars.FILA_PAGAMENTO_PENDENTE}}
+          TOPICO_REGISTRO_ARN: ${{ vars.TOPICO_REGISTRO_ARN }}
           ENV: ${{ vars.ENV }}

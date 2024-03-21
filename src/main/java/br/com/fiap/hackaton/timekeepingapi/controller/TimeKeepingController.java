@@ -30,10 +30,10 @@ public class TimeKeepingController extends ControllerBase {
 
     @Operation(summary = "Registra um novo ponto")
     @PostMapping(value = "/registry")
-    public ResponseEntity<TimeKeepingDTO> registrar(@Valid @RequestBody TimeKeepingDTO timeKeepingDTO) {
-        var timeKeeping = timeKeepingService.save(TimeKeepingDTO.toTimeKeeping(timeKeepingDTO));
-        var uri = getExpandedCurrentUri("/{id}", timeKeeping.getId());
-        logger.info("registro {} efetuado com sucesso", timeKeeping.getTime());
-        return ResponseEntity.created(uri).body(new TimeKeepingDTO(timeKeeping));
+    public ResponseEntity<TimeKeepingDTO> registry(@Valid @RequestBody TimeKeepingDTO timeKeepingDTO) {
+        TimeKeepingDTO publishedMessage = timeKeepingService.publish(timeKeepingDTO);
+        var uri = getExpandedCurrentUri("/{id}", publishedMessage.getId());
+        logger.info("registro {} de ponto efetuado com sucesso", publishedMessage.getId());
+        return ResponseEntity.created(uri).body(publishedMessage);
     }
 }

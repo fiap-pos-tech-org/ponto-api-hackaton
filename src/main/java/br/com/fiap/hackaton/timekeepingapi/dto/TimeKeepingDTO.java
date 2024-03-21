@@ -1,12 +1,13 @@
 package br.com.fiap.hackaton.timekeepingapi.dto;
 
-import br.com.fiap.hackaton.timekeepingapi.domain.TimeKeeping;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
 public class TimeKeepingDTO {
+
+    private String id;
 
     @Schema(example = "123456")
     @NotNull(message = "O campo timeClockId é obrigatório")
@@ -21,14 +22,23 @@ public class TimeKeepingDTO {
     public TimeKeepingDTO() {
     }
 
-    public TimeKeepingDTO(TimeKeeping timeKeeping) {
-        this.timeClockId = timeKeeping.getTimeClockId();
-        this.userId = timeKeeping.getUser().getId();
-        this.time = timeKeeping.getTime();
+    public TimeKeepingDTO(String id, Long timeClockId, Long userId, LocalDateTime time) {
+        this.id = id;
+        this.timeClockId = timeClockId;
+        this.userId = userId;
+        this.time = time;
     }
 
-    public static TimeKeeping toTimeKeeping(TimeKeepingDTO timeKeepingDTO) {
-        return new TimeKeeping(timeKeepingDTO.getTimeClockId(), timeKeepingDTO.getTime(), UserDTO.toUser(timeKeepingDTO.getUserId()));
+    public TimeKeepingDTO comId(String id) {
+        return new TimeKeepingDTO(id, timeClockId, userId, time);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Long getTimeClockId() {

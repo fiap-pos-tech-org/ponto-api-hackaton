@@ -24,10 +24,8 @@ spec:
               value: ${DB_USER}
             - name: DB_PASS
               value: ${DB_PASS}
-            - name: TOPICO_PAGAMENTO_RETORNO_ARN
-              value: ${TOPICO_PAGAMENTO_RETORNO_ARN}
-            - name: FILA_PAGAMENTO_PENDENTE
-              value: ${FILA_PAGAMENTO_PENDENTE}
+            - name: TOPICO_REGISTRO_ARN
+              value: ${TOPICO_REGISTRO_ARN}
             - name: ENV
               value: ${ENV}
           volumeMounts:
