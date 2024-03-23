@@ -25,7 +25,7 @@ public class ClockRegistryDTO extends ClockRegistryBaseDTO {
     }
 
     @Override
-    public ClockRegistryDTO comId(String id) {
+    public ClockRegistryDTO withId(String id) {
         return new ClockRegistryDTO(id, getUserId(), timeClockId, time);
     }
 

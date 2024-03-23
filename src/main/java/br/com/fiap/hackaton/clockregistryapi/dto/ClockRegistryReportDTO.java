@@ -18,7 +18,7 @@ public class ClockRegistryReportDTO extends ClockRegistryBaseDTO {
     }
 
     @Override
-    public ClockRegistryReportDTO comId(String id) {
+    public ClockRegistryReportDTO withId(String id) {
         return new ClockRegistryReportDTO(id, getUserId(), month);
     }
 

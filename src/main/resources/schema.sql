@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS user (
     email VARCHAR(100) NOT NULL UNIQUE,
     name VARCHAR(100),
     creation_date timestamp NOT NULL,
+    role VARCHAR(20) NOT NULL,
     PRIMARY KEY (id)
 );
 

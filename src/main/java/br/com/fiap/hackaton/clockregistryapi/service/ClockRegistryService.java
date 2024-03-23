@@ -26,7 +26,8 @@ public class ClockRegistryService {
     private final UserService userService;
 
     public ClockRegistryService(TopicoRegistroProducer topicoRegistroProducer,
-                                ClockRegistryRepository clockRegistryRepository, UserService userService) {
+                                ClockRegistryRepository clockRegistryRepository,
+                                UserService userService) {
         this.topicoRegistroProducer = topicoRegistroProducer;
         this.clockRegistryRepository = clockRegistryRepository;
         this.userService = userService;
@@ -37,7 +38,7 @@ public class ClockRegistryService {
         var clockRegistryDTO = (ClockRegistryDTO) clockRegistryBaseDTO;
         clockRegistryDTO.setTime(LocalDateTime.now());
         var messageId = topicoRegistroProducer.publish(clockRegistryDTO);
-        return clockRegistryDTO.comId(messageId);
+        return clockRegistryDTO.withId(messageId);
     }
 
     public ClockRegistryDailyDTO getClockRegistriesOfDayByUser(Long userId) {
@@ -67,7 +68,7 @@ public class ClockRegistryService {
         }
 
         var messageId = topicoRegistroProducer.publish(clockRegistryDTO);
-        return clockRegistryDTO.comId(messageId);
+        return clockRegistryDTO.withId(messageId);
     }
 
     private List<String> getClockRegistries(List<ClockRegistry> clockRegistries) {

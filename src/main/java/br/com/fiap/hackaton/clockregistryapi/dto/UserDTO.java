@@ -1,5 +1,6 @@
 package br.com.fiap.hackaton.clockregistryapi.dto;
 
+import br.com.fiap.hackaton.clockregistryapi.domain.Role;
 import br.com.fiap.hackaton.clockregistryapi.domain.User;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -31,22 +32,33 @@ public class UserDTO {
     @Hidden
     private LocalDateTime creationDate;
 
+    @Schema(example = "ADMIN")
+    @NotBlank(message = "O campo role é obrigatório")
+    private Role role;
+
+    @Hidden
+    private String token;
+
     public UserDTO() {
     }
 
-    public UserDTO(String username, String email, String name) {
+    public UserDTO(String username, String email, String name, Role role, String token) {
         this.username = username;
         this.email = email;
         this.name = name;
         this.creationDate = LocalDateTime.now();
+        this.role = role;
+        this.token = token;
     }
 
-    public UserDTO(Long id, String username, String email, String name, LocalDateTime creationDate) {
+    public UserDTO(Long id, String username, String email, String name, LocalDateTime creationDate, Role role, String token) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.name = name;
         this.creationDate = creationDate;
+        this.role = role;
+        this.token = token;
     }
 
     public UserDTO(User user) {
@@ -55,6 +67,11 @@ public class UserDTO {
         this.email = user.getEmail();
         this.name = user.getName();
         this.creationDate = user.getCreationDate();
+        this.role = user.getRole();
+    }
+
+    public UserDTO withToken(String token) {
+        return new UserDTO(id, username, email, name, creationDate, role, token);
     }
 
     public Long getId() {
@@ -95,6 +112,22 @@ public class UserDTO {
 
     public LocalDateTime getCreationDate() {
         return creationDate;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
 }

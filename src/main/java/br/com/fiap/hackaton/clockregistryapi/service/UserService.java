@@ -16,18 +16,25 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UserDTO save(UserDTO userDTO) {
-        if (userRepository.existsByUsernameOrEmail(userDTO.getUsername(), userDTO.getEmail())) {
-            throw new EntityAlreadyExistException(String.format("Usuário com username %s ou email %s já está cadastrado",
-                    userDTO.getUsername(), userDTO.getEmail()));
-        }
-        var userSaved = userRepository.save(new User(userDTO));
-        return new UserDTO(userSaved);
+    public User save(UserDTO userDTO) {
+        return userRepository.save(new User(userDTO));
+    }
+
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Usuário %s não encontrado", username)));
     }
 
     public User findById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Usuário %s não encontrado", userId)));
+    }
+
+    public void existsByUsernameOrEmail(String username, String email) {
+        if (userRepository.existsByUsernameOrEmail(username, email)) {
+            throw new EntityAlreadyExistException(String.format("Usuário com username %s ou email %s já está cadastrado",
+                    username, email));
+        }
     }
 
 }

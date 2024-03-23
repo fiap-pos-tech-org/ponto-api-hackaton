@@ -27,7 +27,7 @@ public abstract class ClockRegistryBaseDTO {
         this.userId = userId;
     }
 
-    public abstract ClockRegistryBaseDTO comId(String id);
+    public abstract ClockRegistryBaseDTO withId(String id);
 
     public String getId() {
         return id;
