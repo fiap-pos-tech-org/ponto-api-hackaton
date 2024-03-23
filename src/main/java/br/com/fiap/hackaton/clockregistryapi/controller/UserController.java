@@ -34,7 +34,7 @@ public class UserController extends ControllerBase {
         UserDTO userSaved = userService.save(userDTO);
         var uri = getExpandedCurrentUri("/{id}", String.valueOf(userDTO.getId()));
         logger.info("usuario {} registrado com sucesso", userSaved.getId());
-        return ResponseEntity.created(uri).body(userDTO);
+        return ResponseEntity.created(uri).body(userSaved);
     }
 
 }

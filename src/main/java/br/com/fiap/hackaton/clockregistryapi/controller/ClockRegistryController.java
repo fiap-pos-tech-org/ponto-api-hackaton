@@ -55,7 +55,7 @@ public class ClockRegistryController extends ControllerBase {
                                                                                @Parameter(example = "1")
                                                                                @RequestParam
                                                                                @Pattern(regexp = "^\\d*$", message = "O mês deve conter apenas números") String month) {
-        var clockRegistryReportDTO = new ClockRegistryReportDTO(Long.parseLong(userId), Long.parseLong(month));
+        var clockRegistryReportDTO = new ClockRegistryReportDTO(Long.parseLong(userId), Integer.parseInt(month));
         ClockRegistryReportDTO registryOfDayByUser = clockRegistryService.publishReportToTopicoRegistro(clockRegistryReportDTO);
         return ResponseEntity.ok().body(registryOfDayByUser);
     }

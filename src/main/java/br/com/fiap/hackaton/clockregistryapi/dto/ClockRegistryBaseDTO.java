@@ -1,5 +1,6 @@
 package br.com.fiap.hackaton.clockregistryapi.dto;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 
@@ -7,6 +8,7 @@ import java.time.LocalDateTime;
 
 public abstract class ClockRegistryBaseDTO {
 
+    @Hidden
     private String id;
 
     @Schema(example = "789")

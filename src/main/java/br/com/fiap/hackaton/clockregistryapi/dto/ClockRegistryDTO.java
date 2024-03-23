@@ -1,5 +1,6 @@
 package br.com.fiap.hackaton.clockregistryapi.dto;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 
@@ -11,6 +12,7 @@ public class ClockRegistryDTO extends ClockRegistryBaseDTO {
     @NotNull(message = "O campo timeClockId é obrigatório")
     private Long timeClockId;
 
+    @Hidden
     private LocalDateTime time;
 
     public ClockRegistryDTO() {

@@ -23,13 +23,17 @@ public class ClockRegistryService {
 
     private final TopicoRegistroProducer topicoRegistroProducer;
     private final ClockRegistryRepository clockRegistryRepository;
+    private final UserService userService;
 
-    public ClockRegistryService(TopicoRegistroProducer topicoRegistroProducer, ClockRegistryRepository clockRegistryRepository) {
+    public ClockRegistryService(TopicoRegistroProducer topicoRegistroProducer,
+                                ClockRegistryRepository clockRegistryRepository, UserService userService) {
         this.topicoRegistroProducer = topicoRegistroProducer;
         this.clockRegistryRepository = clockRegistryRepository;
+        this.userService = userService;
     }
 
     public ClockRegistryDTO publishRegistryToTopicoRegistro(ClockRegistryBaseDTO clockRegistryBaseDTO) {
+        userService.findById(clockRegistryBaseDTO.getUserId());
         var clockRegistryDTO = (ClockRegistryDTO) clockRegistryBaseDTO;
         clockRegistryDTO.setTime(LocalDateTime.now());
         var messageId = topicoRegistroProducer.publish(clockRegistryDTO);
@@ -40,7 +44,9 @@ public class ClockRegistryService {
         var currentDate = LocalDate.now();
         List<ClockRegistry> clockRegistries = clockRegistryRepository.findByUserIdAndTimeLikeOrderByTime(userId, currentDate.toString());
         if (Objects.isNull(clockRegistries) || clockRegistries.isEmpty()) {
-            throw new EntityNotFoundException(String.format("Não há registro de ponto do usuário %s", userId));
+            var formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            var currentDateFormated = formatter.format(currentDate);
+            throw new EntityNotFoundException(String.format("Não há registro de ponto do usuário %s do dia %s", userId, currentDateFormated));
         }
 
         var username = clockRegistries.get(0).getUser().getName();
@@ -52,6 +58,14 @@ public class ClockRegistryService {
 
     public ClockRegistryReportDTO publishReportToTopicoRegistro(ClockRegistryBaseDTO clockRegistryBaseDTO) {
         var clockRegistryDTO = (ClockRegistryReportDTO) clockRegistryBaseDTO;
+        var currentDate = LocalDate.now().withMonth(clockRegistryDTO.getMonth());
+        var formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+        var timePattern = formatter.format(currentDate);
+        List<ClockRegistry> clockRegistries = clockRegistryRepository.findByUserIdAndTimeLikeOrderByTime(clockRegistryBaseDTO.getUserId(), timePattern);
+        if (Objects.isNull(clockRegistries) || clockRegistries.isEmpty()) {
+            throw new EntityNotFoundException(String.format("Não há registro de ponto do usuário %s do mês %s", clockRegistryBaseDTO.getUserId(), timePattern));
+        }
+
         var messageId = topicoRegistroProducer.publish(clockRegistryDTO);
         return clockRegistryDTO.comId(messageId);
     }

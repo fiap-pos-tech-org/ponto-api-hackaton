@@ -1,6 +1,7 @@
 package br.com.fiap.hackaton.clockregistryapi.dto;
 
 import br.com.fiap.hackaton.clockregistryapi.domain.User;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
@@ -8,6 +9,7 @@ import java.time.LocalDateTime;
 
 public class UserDTO {
 
+    @Hidden
     private Long id;
 
     @Schema(example = "jhon")
@@ -26,6 +28,7 @@ public class UserDTO {
     @NotBlank(message = "O campo name é obrigatório")
     private String name;
 
+    @Hidden
     private LocalDateTime creationDate;
 
     public UserDTO() {
