@@ -2,31 +2,31 @@ package br.com.fiap.hackaton.clockregistryapi.dto;
 
 public class ClockRegistryReportDTO extends ClockRegistryBaseDTO {
 
-    private Integer month;
+    private String yearMonth;
 
     public ClockRegistryReportDTO() {
     }
 
-    public ClockRegistryReportDTO(String id, Long userId, Integer month) {
+    public ClockRegistryReportDTO(String id, Long userId, String yearMonth) {
         super(id, userId);
-        this.month = month;
+        this.yearMonth = yearMonth;
     }
 
-    public ClockRegistryReportDTO(Long userId, Integer month) {
+    public ClockRegistryReportDTO(Long userId, String yearMonth) {
         super(userId);
-        this.month = month;
+        this.yearMonth = yearMonth;
     }
 
     @Override
     public ClockRegistryReportDTO withId(String id) {
-        return new ClockRegistryReportDTO(id, getUserId(), month);
+        return new ClockRegistryReportDTO(id, getUserId(), yearMonth);
     }
 
-    public Integer getMonth() {
-        return month;
+    public String getYearMonth() {
+        return yearMonth;
     }
 
-    public void setMonth(Integer month) {
-        this.month = month;
+    public void setYearMonth(String yearMonth) {
+        this.yearMonth = yearMonth;
     }
 }

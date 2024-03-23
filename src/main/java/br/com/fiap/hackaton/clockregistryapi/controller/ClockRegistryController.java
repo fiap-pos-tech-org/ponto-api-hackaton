@@ -54,8 +54,8 @@ public class ClockRegistryController extends ControllerBase {
                                                                                @Pattern(regexp = "^\\d*$", message = "O id do usuário deve conter apenas números") String userId,
                                                                                @Parameter(example = "1")
                                                                                @RequestParam
-                                                                               @Pattern(regexp = "^\\d*$", message = "O mês deve conter apenas números") String month) {
-        var clockRegistryReportDTO = new ClockRegistryReportDTO(Long.parseLong(userId), Integer.parseInt(month));
+                                                                               @Pattern(regexp = "^\\d{4}-(0[1-9]|1[0-2])$", message = "O campo yearMonth deve ser yyyy-MM") String yearMonth) {
+        var clockRegistryReportDTO = new ClockRegistryReportDTO(Long.parseLong(userId), yearMonth);
         ClockRegistryReportDTO registryOfDayByUser = clockRegistryService.publishReportToTopicoRegistro(clockRegistryReportDTO);
         return ResponseEntity.ok().body(registryOfDayByUser);
     }
