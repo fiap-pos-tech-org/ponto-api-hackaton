@@ -1,5 +1,6 @@
 package br.com.fiap.hackaton.clockregistryapi.message.producers;
 
+import br.com.fiap.hackaton.clockregistryapi.dto.ClockRegistryBaseDTO;
 import br.com.fiap.hackaton.clockregistryapi.dto.ClockRegistryDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,10 +27,10 @@ public class TopicoRegistroProducer implements TopicProducer {
     }
 
     @Override
-    public String publish(ClockRegistryDTO clockRegistryDTO) {
+    public String publish(ClockRegistryBaseDTO clockRegistryBaseDTO) {
         String message;
         try {
-            message = mapper.writeValueAsString(clockRegistryDTO);
+            message = mapper.writeValueAsString(clockRegistryBaseDTO);
         } catch (JsonProcessingException e) {
             logger.error("erro ao serializar mensagem: {}", e.getMessage());
             throw new RuntimeException(e);

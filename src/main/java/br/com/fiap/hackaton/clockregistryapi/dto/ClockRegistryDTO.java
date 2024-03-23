@@ -5,40 +5,26 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-public class ClockRegistryDTO {
-
-    private String id;
+public class ClockRegistryDTO extends ClockRegistryBaseDTO {
 
     @Schema(example = "123456")
     @NotNull(message = "O campo timeClockId é obrigatório")
     private Long timeClockId;
-
-    @Schema(example = "789")
-    @NotNull(message = "O campo userId é obrigatório")
-    private Long userId;
 
     private LocalDateTime time;
 
     public ClockRegistryDTO() {
     }
 
-    public ClockRegistryDTO(String id, Long timeClockId, Long userId, LocalDateTime time) {
-        this.id = id;
+    public ClockRegistryDTO(String id, Long userId, Long timeClockId, LocalDateTime time) {
+        super(id, userId);
         this.timeClockId = timeClockId;
-        this.userId = userId;
         this.time = time;
     }
 
+    @Override
     public ClockRegistryDTO comId(String id) {
-        return new ClockRegistryDTO(id, timeClockId, userId, time);
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+        return new ClockRegistryDTO(id, getUserId(), timeClockId, time);
     }
 
     public Long getTimeClockId() {
@@ -47,14 +33,6 @@ public class ClockRegistryDTO {
 
     public void setTimeClockId(Long timeClockId) {
         this.timeClockId = timeClockId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public LocalDateTime getTime() {

@@ -1,8 +1,10 @@
 package br.com.fiap.hackaton.clockregistryapi.service;
 
 import br.com.fiap.hackaton.clockregistryapi.domain.ClockRegistry;
+import br.com.fiap.hackaton.clockregistryapi.dto.ClockRegistryBaseDTO;
 import br.com.fiap.hackaton.clockregistryapi.dto.ClockRegistryDTO;
 import br.com.fiap.hackaton.clockregistryapi.dto.ClockRegistryDailyDTO;
+import br.com.fiap.hackaton.clockregistryapi.dto.ClockRegistryReportDTO;
 import br.com.fiap.hackaton.clockregistryapi.exception.EntityNotFoundException;
 import br.com.fiap.hackaton.clockregistryapi.message.producers.TopicoRegistroProducer;
 import br.com.fiap.hackaton.clockregistryapi.repository.ClockRegistryRepository;
@@ -27,7 +29,8 @@ public class ClockRegistryService {
         this.clockRegistryRepository = clockRegistryRepository;
     }
 
-    public ClockRegistryDTO publish(ClockRegistryDTO clockRegistryDTO) {
+    public ClockRegistryDTO publishRegistryToTopicoRegistro(ClockRegistryBaseDTO clockRegistryBaseDTO) {
+        var clockRegistryDTO = (ClockRegistryDTO) clockRegistryBaseDTO;
         clockRegistryDTO.setTime(LocalDateTime.now());
         var messageId = topicoRegistroProducer.publish(clockRegistryDTO);
         return clockRegistryDTO.comId(messageId);
@@ -45,6 +48,12 @@ public class ClockRegistryService {
         String totalHoursWorked = getTotalHoursWorked(clockRegistries);
 
         return new ClockRegistryDailyDTO(username, clockRegistriesAsString, totalHoursWorked);
+    }
+
+    public ClockRegistryReportDTO publishReportToTopicoRegistro(ClockRegistryBaseDTO clockRegistryBaseDTO) {
+        var clockRegistryDTO = (ClockRegistryReportDTO) clockRegistryBaseDTO;
+        var messageId = topicoRegistroProducer.publish(clockRegistryDTO);
+        return clockRegistryDTO.comId(messageId);
     }
 
     private List<String> getClockRegistries(List<ClockRegistry> clockRegistries) {
