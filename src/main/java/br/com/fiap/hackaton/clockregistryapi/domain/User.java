@@ -1,5 +1,6 @@
 package br.com.fiap.hackaton.clockregistryapi.domain;
 
+import br.com.fiap.hackaton.clockregistryapi.dto.UserDTO;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -38,10 +39,6 @@ public class User {
     public User() {
     }
 
-    public User(Long id) {
-        this.id = id;
-    }
-
     public User(String username, String password, String email, String name) {
         this.username = username;
         this.password = password;
@@ -55,6 +52,13 @@ public class User {
         this.email = email;
         this.name = name;
         this.clockRegistries = clockRegistries;
+    }
+
+    public User(UserDTO userDTO) {
+        this.username = userDTO.getUsername();
+        this.password = userDTO.getPassword();
+        this.email = userDTO.getEmail();
+        this.name = userDTO.getName();
     }
 
     public Long getId() {

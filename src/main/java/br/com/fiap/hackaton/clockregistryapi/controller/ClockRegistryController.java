@@ -15,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "Ponto", description = "APIs para registro de ponto ")
+@Tag(name = "Registro de Ponto", description = "APIs para registro de ponto")
 @Validated
 @RestController
 @RequestMapping("/clock-registries")
