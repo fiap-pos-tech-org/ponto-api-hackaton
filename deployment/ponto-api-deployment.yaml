@@ -28,6 +28,8 @@ spec:
               value: ${TOPICO_REGISTRO_ARN}
             - name: ENV
               value: ${ENV}
+            - name: TOKEN_SECRET_KEY
+              value: ${TOKEN_SECRET_KEY}
           volumeMounts:
             - mountPath: /ponto-api-volume
               name: ponto-api-volume

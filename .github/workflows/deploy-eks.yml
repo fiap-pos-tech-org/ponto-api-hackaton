@@ -50,3 +50,4 @@ jobs:
           DB_PASS: ${{ secrets.DB_PASS }}
           TOPICO_REGISTRO_ARN: ${{ vars.TOPICO_REGISTRO_ARN }}
           ENV: ${{ vars.ENV }}
+          TOKEN_SECRET_KEY: ${{ secrets.TOKEN_SECRET_KEY }}
