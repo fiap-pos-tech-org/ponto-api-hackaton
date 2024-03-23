@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS user (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS time_keeping (
+CREATE TABLE IF NOT EXISTS clock_registry (
     id bigint NOT NULL AUTO_INCREMENT,
     time_clock_id bigint NOT NULL,
     time timestamp NOT NULL,
