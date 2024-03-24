@@ -1,7 +1,6 @@
 package br.com.fiap.hackaton.clockregistryapi.message.producers;
 
 import br.com.fiap.hackaton.clockregistryapi.dto.ClockRegistryBaseDTO;
-import br.com.fiap.hackaton.clockregistryapi.dto.ClockRegistryDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
@@ -12,18 +11,18 @@ import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.sns.model.PublishRequest;
 
 @Component
-public class TopicoRegistroProducer implements TopicProducer {
+public class RegistryTopicProducer implements TopicProducer {
 
-    private final Logger logger = LogManager.getLogger(TopicoRegistroProducer.class);
+    private final Logger logger = LogManager.getLogger(RegistryTopicProducer.class);
 
     private final SnsClient snsClient;
     private final ObjectMapper mapper;
-    private final String topicoRegistroArn;
+    private final String registryTopicArn;
 
-    public TopicoRegistroProducer(SnsClient snsClient, ObjectMapper mapper, @Value("${aws.sns.topico-registro-arn}") String topicoRegistroArn) {
+    public RegistryTopicProducer(SnsClient snsClient, ObjectMapper mapper, @Value("${aws.sns.registry-topic-arn}") String registryTopicArn) {
         this.snsClient = snsClient;
         this.mapper = mapper;
-        this.topicoRegistroArn = topicoRegistroArn;
+        this.registryTopicArn = registryTopicArn;
     }
 
     @Override
@@ -38,11 +37,11 @@ public class TopicoRegistroProducer implements TopicProducer {
 
         var request = PublishRequest.builder()
                 .message(message)
-                .topicArn(topicoRegistroArn)
+                .topicArn(registryTopicArn)
                 .build();
 
         var response = snsClient.publish(request);
-        logger.info("mensagem com id {} publicada com sucesso no topico-registro", response.messageId());
+        logger.info("mensagem com id {} publicada com sucesso no tópico registry_topic", response.messageId());
         return response.messageId();
     }
 }

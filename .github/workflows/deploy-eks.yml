@@ -48,6 +48,6 @@ jobs:
           DB_HOST: ${{ secrets.DB_HOST }}
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASS: ${{ secrets.DB_PASS }}
-          TOPICO_REGISTRO_ARN: ${{ vars.TOPICO_REGISTRO_ARN }}
+          REGISTRY_TOPIC_ARN: ${{ vars.REGISTRY_TOPIC_ARN }}
           ENV: ${{ vars.ENV }}
           TOKEN_SECRET_KEY: ${{ secrets.TOKEN_SECRET_KEY }}

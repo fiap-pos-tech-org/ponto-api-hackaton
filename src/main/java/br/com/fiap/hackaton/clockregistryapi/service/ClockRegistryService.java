@@ -6,7 +6,7 @@ import br.com.fiap.hackaton.clockregistryapi.dto.ClockRegistryDTO;
 import br.com.fiap.hackaton.clockregistryapi.dto.ClockRegistryDailyDTO;
 import br.com.fiap.hackaton.clockregistryapi.dto.ClockRegistryReportDTO;
 import br.com.fiap.hackaton.clockregistryapi.exception.EntityNotFoundException;
-import br.com.fiap.hackaton.clockregistryapi.message.producers.TopicoRegistroProducer;
+import br.com.fiap.hackaton.clockregistryapi.message.producers.RegistryTopicProducer;
 import br.com.fiap.hackaton.clockregistryapi.repository.ClockRegistryRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,23 +21,23 @@ import java.util.Objects;
 @Service
 public class ClockRegistryService {
 
-    private final TopicoRegistroProducer topicoRegistroProducer;
+    private final RegistryTopicProducer registryTopicProducer;
     private final ClockRegistryRepository clockRegistryRepository;
     private final UserService userService;
 
-    public ClockRegistryService(TopicoRegistroProducer topicoRegistroProducer,
+    public ClockRegistryService(RegistryTopicProducer registryTopicProducer,
                                 ClockRegistryRepository clockRegistryRepository,
                                 UserService userService) {
-        this.topicoRegistroProducer = topicoRegistroProducer;
+        this.registryTopicProducer = registryTopicProducer;
         this.clockRegistryRepository = clockRegistryRepository;
         this.userService = userService;
     }
 
-    public ClockRegistryDTO publishRegistryToTopicoRegistro(ClockRegistryBaseDTO clockRegistryBaseDTO) {
+    public ClockRegistryDTO publishClockRegistryToRegistryTopic(ClockRegistryBaseDTO clockRegistryBaseDTO) {
         userService.findById(clockRegistryBaseDTO.getUserId());
         var clockRegistryDTO = (ClockRegistryDTO) clockRegistryBaseDTO;
         clockRegistryDTO.setTime(LocalDateTime.now());
-        var messageId = topicoRegistroProducer.publish(clockRegistryDTO);
+        var messageId = registryTopicProducer.publish(clockRegistryDTO);
         return clockRegistryDTO.withId(messageId);
     }
 
@@ -59,7 +59,7 @@ public class ClockRegistryService {
         return new ClockRegistryDailyDTO(username, clockRegistriesAsString, totalHoursWorked);
     }
 
-    public ClockRegistryReportDTO publishReportToTopicoRegistro(ClockRegistryBaseDTO clockRegistryBaseDTO) {
+    public ClockRegistryReportDTO publishReportToRegistryTopic(ClockRegistryBaseDTO clockRegistryBaseDTO) {
         var clockRegistryDTO = (ClockRegistryReportDTO) clockRegistryBaseDTO;
         List<ClockRegistry> clockRegistries = clockRegistryRepository
                 .findByUserIdAndTimeLikeOrderByTime(clockRegistryBaseDTO.getUserId(), clockRegistryDTO.getYearMonth());
@@ -68,7 +68,7 @@ public class ClockRegistryService {
                     clockRegistryBaseDTO.getUserId(), clockRegistryDTO.getYearMonth()));
         }
 
-        var messageId = topicoRegistroProducer.publish(clockRegistryDTO);
+        var messageId = registryTopicProducer.publish(clockRegistryDTO);
         return clockRegistryDTO.withId(messageId);
     }
 

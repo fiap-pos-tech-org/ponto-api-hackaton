@@ -24,8 +24,8 @@ spec:
               value: ${DB_USER}
             - name: DB_PASS
               value: ${DB_PASS}
-            - name: TOPICO_REGISTRO_ARN
-              value: ${TOPICO_REGISTRO_ARN}
+            - name: REGISTRY_TOPIC_ARN
+              value: ${REGISTRY_TOPIC_ARN}
             - name: ENV
               value: ${ENV}
             - name: TOKEN_SECRET_KEY

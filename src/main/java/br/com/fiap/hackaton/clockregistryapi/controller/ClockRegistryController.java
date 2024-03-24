@@ -32,7 +32,7 @@ public class ClockRegistryController extends ControllerBase {
     @Operation(summary = "Registra um novo ponto")
     @PostMapping(value = "/registry")
     public ResponseEntity<ClockRegistryDTO> registry(@Valid @RequestBody ClockRegistryDTO clockRegistryDTO) {
-        ClockRegistryDTO publishedMessage = clockRegistryService.publishRegistryToTopicoRegistro(clockRegistryDTO);
+        ClockRegistryDTO publishedMessage = clockRegistryService.publishClockRegistryToRegistryTopic(clockRegistryDTO);
         var uri = getExpandedCurrentUri("/{id}", publishedMessage.getId());
         logger.info("registro {} de ponto efetuado com sucesso", publishedMessage.getId());
         return ResponseEntity.created(uri).body(publishedMessage);
@@ -56,7 +56,7 @@ public class ClockRegistryController extends ControllerBase {
                                                                                @RequestParam
                                                                                @Pattern(regexp = "^\\d{4}-(0[1-9]|1[0-2])$", message = "O campo yearMonth deve ser yyyy-MM") String yearMonth) {
         var clockRegistryReportDTO = new ClockRegistryReportDTO(Long.parseLong(userId), yearMonth);
-        ClockRegistryReportDTO registryOfDayByUser = clockRegistryService.publishReportToTopicoRegistro(clockRegistryReportDTO);
+        ClockRegistryReportDTO registryOfDayByUser = clockRegistryService.publishReportToRegistryTopic(clockRegistryReportDTO);
         return ResponseEntity.ok().body(registryOfDayByUser);
     }
 
