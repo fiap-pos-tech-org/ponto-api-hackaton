@@ -17,6 +17,7 @@ jobs:
       contents: write
       pull-requests: write
       repository-projects: write
+    needs: build
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
