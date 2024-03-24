@@ -1,0 +1,35 @@
+version: '3.5'
+
+services:
+  mysql:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: ponto_db
+    ports:
+      - "3306:3306"
+    networks:
+      - hackaton_app_network
+    expose:
+      - 3306
+
+  localstack:
+    image: localstack/localstack:stable
+    hostname: localstack
+    container_name: localstack
+    ports:
+      - "127.0.0.1:4566:4566"
+      - "127.0.0.1:4510-4559:4510-4559"
+    environment:
+      - DEBUB=1
+      - SERVICES=sns,sqs
+    volumes:
+      - "/home/diego/code/pos/localhost-volume:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./scripts/aws-event-bus.sh:/etc/localstack/init/ready.d/aws-event-bus.sh"
+
+networks:
+  hackaton_app_network:
+    name: "hackaton_app_network"
+    driver: bridge
