@@ -55,7 +55,6 @@ public class ClockRegistryService {
         var username = clockRegistries.get(0).getUser().getName();
         List<String> clockRegistriesAsString = getClockRegistries(clockRegistries);
         String totalHoursWorked = getTotalHoursWorked(clockRegistries);
-
         return new ClockRegistryDailyDTO(username, clockRegistriesAsString, totalHoursWorked);
     }
 

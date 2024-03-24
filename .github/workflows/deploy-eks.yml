@@ -7,7 +7,6 @@ on:
 
 env:
   EKS_CLUSTER: tech-challenge-38
-  PROJECT_KEY: fiap-pos-tech-org_payment-service-tech-challenge
 
 jobs:
   deploy:
