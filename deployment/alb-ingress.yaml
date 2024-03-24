@@ -10,7 +10,7 @@ spec:
   rules:
     - http:
         paths:
-        - path: /swagger-ui/index.html
+        - path: /.*
           pathType: Prefix
           backend:
             service:
