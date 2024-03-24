@@ -35,7 +35,7 @@ public class ClockRegistryService {
     public ClockRegistryDTO publishClockRegistryToRegistryTopic(ClockRegistryBaseDTO clockRegistryBaseDTO) {
         userService.findById(clockRegistryBaseDTO.getUserId());
         var clockRegistryDTO = (ClockRegistryDTO) clockRegistryBaseDTO;
-        clockRegistryDTO.setTime(LocalDateTime.now().atZone(ZoneId.of("America/Sao_Paulo")).toLocalDateTime());
+        clockRegistryDTO.setTime(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
         var messageId = registryTopicProducer.publish(clockRegistryDTO);
         return clockRegistryDTO.withId(messageId);
     }
