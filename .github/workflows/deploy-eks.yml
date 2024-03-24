@@ -1,0 +1,52 @@
+name: Deploy
+
+on:
+  pull_request:
+    types: closed
+    branches: main
+
+env:
+  EKS_CLUSTER: tech-challenge-38
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    needs: sonar-analysis
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Login to EKS cluster
+        run: aws eks update-kubeconfig --name ${{ env.EKS_CLUSTER }} --region ${{ env.AWS_REGION }}
+
+      - name: Login to DockerHub
+        run: docker login -u geter -p ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t geter/ponto-api-techchallenge38:latest .
+          docker push geter/ponto-api-techchallenge38
+
+      - name: Deploy EKS
+        uses: swdotcom/update-and-apply-kubernetes-configs@v1.3
+        with:
+          k8-config-file-paths: |
+            deployment/alb-ingress.yaml
+            deployment/ponto-api-deployment.yaml
+            deployment/ponto-api-service.yaml
+            deployment/ponto-api-serviceaccount.yaml
+          replacement-method: defined
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+          REGISTRY_TOPIC_ARN: ${{ vars.REGISTRY_TOPIC_ARN }}
+          ENV: ${{ vars.ENV }}
+          TOKEN_SECRET_KEY: ${{ secrets.TOKEN_SECRET_KEY }}
