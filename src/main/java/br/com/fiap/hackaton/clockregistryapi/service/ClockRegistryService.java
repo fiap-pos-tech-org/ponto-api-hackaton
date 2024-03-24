@@ -15,8 +15,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.IntStream;
 
 @Service
 public class ClockRegistryService {
@@ -96,11 +98,16 @@ public class ClockRegistryService {
 
     private Duration calculateTotalHoursWorked(List<ClockRegistry> clockRegistries) {
         var totalHoursWorked = Duration.ZERO;
-        for (int i = 0; i < clockRegistries.size() - 1; i++) {
-            var initialDate = clockRegistries.get(i).getTime();
-            var endDate = clockRegistries.get(i + 1).getTime();
-            var difference = Duration.between(initialDate, endDate);
-            totalHoursWorked = totalHoursWorked.plus(difference);
+        List<List<ClockRegistry>> list = IntStream.range(0, clockRegistries.size() / 2)
+                .mapToObj(i -> Arrays.asList(clockRegistries.get(i * 2), clockRegistries.get(i * 2 + 1)))
+                .toList();
+        for (List<ClockRegistry> registries : list) {
+            for (int i = 0; i < registries.size() - 1; i++) {
+                var initialDate = registries.get(i).getTime();
+                var endDate = registries.get(i + 1).getTime();
+                var difference = Duration.between(initialDate, endDate);
+                totalHoursWorked = totalHoursWorked.plus(difference);
+            }
         }
         return totalHoursWorked;
     }
