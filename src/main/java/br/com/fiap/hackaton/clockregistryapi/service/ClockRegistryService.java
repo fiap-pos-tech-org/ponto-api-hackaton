@@ -10,10 +10,7 @@ import br.com.fiap.hackaton.clockregistryapi.message.producers.RegistryTopicProd
 import br.com.fiap.hackaton.clockregistryapi.repository.ClockRegistryRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +35,7 @@ public class ClockRegistryService {
     public ClockRegistryDTO publishClockRegistryToRegistryTopic(ClockRegistryBaseDTO clockRegistryBaseDTO) {
         userService.findById(clockRegistryBaseDTO.getUserId());
         var clockRegistryDTO = (ClockRegistryDTO) clockRegistryBaseDTO;
-        clockRegistryDTO.setTime(LocalDateTime.now());
+        clockRegistryDTO.setTime(LocalDateTime.now().atZone(ZoneId.of("America/Sao_Paulo")).toLocalDateTime());
         var messageId = registryTopicProducer.publish(clockRegistryDTO);
         return clockRegistryDTO.withId(messageId);
     }
